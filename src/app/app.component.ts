@@ -9,21 +9,26 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 })
 export class AppComponent{
   coursesArr;
+  coursesIndexes;
   courses: AngularFireList<string>;
-  course;
+  indexes: AngularFireList<string>;
   constructor(private db:AngularFireDatabase){
     this.courses = db.list('/courses');
-    console.log(this.courses);
     this.coursesArr = this.courses.valueChanges();
-    console.log(this.coursesArr);
-    this.course = db.object('/courses/1').valueChanges();
+    this.courses.snapshotChanges().subscribe(data=>{
+      this.coursesIndexes = data;
+      console.log(this.coursesIndexes);
+    });
   }
   addCourse(courseVal:HTMLInputElement){
     this.courses.push(courseVal.value);
     courseVal.value = '';
   }
-  updateCourse(course,key){
-    console.log(course);
-    this.db.object('/courses/'+key).set('New Updated course');
+  updateCourse(courseCH){
+    let chosenCourse = this.db.list('/courses').snapshotChanges()
+    .subscribe(data=>{
+      console.log(data[0]);
+    });
+    //this.db.object('/courses/'+key).set('New Updated course');
   }
 }
