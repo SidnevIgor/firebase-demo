@@ -11,13 +11,19 @@ export class AppComponent{
   coursesArr;
   courses: AngularFireList<string>;
   course;
-  constructor(db:AngularFireDatabase){
+  constructor(private db:AngularFireDatabase){
     this.courses = db.list('/courses');
+    console.log(this.courses);
     this.coursesArr = this.courses.valueChanges();
+    console.log(this.coursesArr);
     this.course = db.object('/courses/1').valueChanges();
   }
   addCourse(courseVal:HTMLInputElement){
     this.courses.push(courseVal.value);
     courseVal.value = '';
+  }
+  updateCourse(course,key){
+    console.log(course);
+    this.db.object('/courses/'+key).set('New Updated course');
   }
 }

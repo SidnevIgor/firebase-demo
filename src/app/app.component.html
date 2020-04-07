@@ -1,6 +1,8 @@
 <input type="text" name="" value="" (keyup.enter)="addCourse(courseVal)" #courseVal>
 <ul>
-  <li *ngFor="let course of coursesArr | async">{{course}}</li>
+  <li *ngFor="let course of coursesArr | async | keyvalue">{{course.value}} {{course.key}}
+    <button type="button" name="button" (click)="updateCourse(course.value,course.key)">Update item</button>
+  </li>
 </ul>
 <p>
   {{course | async | json}}
